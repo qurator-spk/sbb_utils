@@ -3,6 +3,81 @@ import requests
 import json
 
 
+def parse_sentence(sent, normalization_map=None):
+    entities = []
+    entity_types = []
+    entity = []
+    ent_type = None
+
+    for p in sent:
+
+        if len(entity) > 0 and (p['prediction'] == 'O' or p['prediction'].startswith('B-')
+                                or p['prediction'][2:] != ent_type):
+            entities += len(entity) * [" ".join(entity)]
+            entity_types += len(entity) * [ent_type]
+            entity = []
+            ent_type = None
+
+        if p['prediction'] != 'O':
+            entity.append(p['word'])
+
+            if ent_type is None:
+                ent_type = p['prediction'][2:]
+        else:
+            entities.append("")
+            entity_types.append("")
+
+    if len(entity) > 0:
+        entities += len(entity) * [" ".join(entity)]
+        entity_types += len(entity) * [ent_type]
+
+    entity_ids = ["{}-{}".format(entity, ent_type) for entity, ent_type in zip(entities, entity_types)]
+
+    if normalization_map is not None:
+        text_json = json.dumps(
+            ["".join([normalization_map[c] if c in normalization_map else c for c in p['word']]) for p in sent])
+
+        tags_json = json.dumps([p['prediction'] for p in sent])
+
+        entities_json = json.dumps(entity_ids)
+
+        return entity_ids, entities, entity_types, text_json, tags_json, entities_json
+    else:
+        return entity_ids, entities, entity_types
+
+
+def count_entities(ner, counter, min_len=4):
+
+    type_agnostic = False if len(counter) == 3 and type(counter[counter.keys()[0]]) == dict else True
+
+    for sent in ner:
+
+        entity_ids, entities, entity_types = parse_sentence(sent)
+
+        already_processed = set()
+
+        for entity_id, entity, ent_type in zip(entity_ids, entities, entity_types):
+
+            if len(entity) < min_len:
+                continue
+
+            if entity_id in already_processed:
+                continue
+
+            already_processed.add(entity_id)
+
+            if type_agnostic:
+                if entity_id in counter:
+                    counter[entity_id] += 1
+                else:
+                    counter[entity_id] = 1
+            else:
+                if entity in counter[ent_type]:
+                    counter[ent_type][entity] += 1
+                else:
+                    counter[ent_type][entity] = 1
+
+
 def ned(tsv, ner_result, ned_rest_endpoint, json_file=None, threshold=None, priority=None, max_candidates=None,
         max_dist=None, not_after=None, ned_result=None):
 

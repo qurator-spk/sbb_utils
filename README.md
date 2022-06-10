@@ -1,8 +1,11 @@
-This package currently provides:
-
-* [A set of tools to perform NER+EL on the digitalized collections of the SBB.](digitized-collections.md)
-* [A set of tools for Wikidata/Wikipedia knowledge-base extraction.](knowledge-base.md) 
-* [A set of tools to perform and visualize topic-modelling on the digitalized collections of the SBB.](topic-modelling.md)
+This package provides shared functionality for
+* [sbb_tools](https://github.com/qurator-spk/sbb_tools)
+* [sbb_knowledge-base](https://github.com/qurator-spk/sbb_knowledge-base)
+* [sbb_ner](https://github.com/qurator-spk/sbb_ner)
+* [sbb_ned](https://github.com/qurator-spk/sbb_ned)
+* [sbb_topic-modelling](https://github.com/qurator-spk/sbb_topic-modelling)
+* [sbb_web_integration](https://github.com/qurator-spk/sbb_web_integration)
+* [page2tsv](https://github.com/qurator-spk/page2tsv)
 
 # Installation:
 
