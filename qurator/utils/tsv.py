@@ -22,6 +22,8 @@ def write_tsv(tsv, urls, contexts, tsv_out_file):
     else:
         out_columns = ['No.', 'TOKEN', 'NE-TAG', 'NE-EMB', 'ID', 'url_id', 'left', 'right', 'top', 'bottom']
 
+    tsv = tsv.dropna(subset=['url_id'])
+
     if len(urls) == 0:
         print('Writing to {}...'.format(tsv_out_file))
 
@@ -33,6 +35,10 @@ def write_tsv(tsv, urls, contexts, tsv_out_file):
 
         for url_id, part in tsv.groupby('url_id'):
             with open(tsv_out_file, 'a') as f:
+
+                if len(urls) == 1 and len(part) == len(tsv):
+                    url_id = 0
+                    part['url_id'] = 0
 
                 if urls[int(url_id)] is not None:
                     f.write('# ' + urls[int(url_id)] + '\n')

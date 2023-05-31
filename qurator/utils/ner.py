@@ -25,6 +25,7 @@ def ner(tsv, ner_rest_endpoint):
     result_sequence = iterate_ner_results(ner_result)
 
     tsv_result = []
+    word_num = 0
     for idx, row in tsv.iterrows():
 
         row_token = unicodedata.normalize('NFC', str(row.TOKEN).replace(' ', ''))
@@ -38,12 +39,12 @@ def ner(tsv, ner_rest_endpoint):
             assert len(row_token) >= len(ner_token_concat)
 
             if sentence_break:
-                tsv_result.append((0, '', 'O', 'O', '-', row.url_id, row.left, row.right, row.top, row.bottom))
+                tsv_result.append((word_num, '', 'O', 'O', '-', row.url_id, row.left, row.right, row.top, row.bottom))
+                word_num = 0
             else:
-                tsv_result.append((0, ner_token, ner_tag, 'O', '-', row.url_id, row.left, row.right, row.top,
+                tsv_result.append((word_num, ner_token, ner_tag, 'O', '-', row.url_id, row.left, row.right, row.top,
                                    row.bottom))
+                word_num += 1
 
     return pd.DataFrame(tsv_result, columns=['No.', 'TOKEN', 'NE-TAG', 'NE-EMB', 'ID', 'url_id',
                                              'left', 'right', 'top', 'bottom']), ner_result
-
-
