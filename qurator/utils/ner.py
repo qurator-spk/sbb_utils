@@ -39,7 +39,7 @@ def ner(tsv, ner_rest_endpoint):
             assert len(row_token) >= len(ner_token_concat)
 
             if sentence_break:
-                tsv_result.append((word_num, '', 'O', 'O', '-', row.url_id, row.left, row.right, row.top, row.bottom))
+                # tsv_result.append((word_num, '', 'O', 'O', '-', row.url_id, row.left, row.right, row.top, row.bottom))
                 word_num = 0
             else:
                 tsv_result.append((word_num, ner_token, ner_tag, 'O', '-', row.url_id, row.left, row.right, row.top,
