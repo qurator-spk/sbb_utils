@@ -144,3 +144,5 @@ def find_entities(tsv_file, tsv_out_file, ner_rest_endpoint, ned_rest_endpoint, 
 
     except requests.HTTPError as e:
         print(e)
+    except AssertionError as ae:
+        print("Assertion during processing of file: {}".format(tsv_file))
