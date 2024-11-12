@@ -61,7 +61,7 @@ def extract_doc_links(tsv_file):
         url = None
         context = None
 
-        for line in f:
+        for pos, line in enumerate(f):
 
             if header is None:
                 header = "\t".join(line.split()) + '\n'
@@ -101,7 +101,7 @@ def extract_doc_links(tsv_file):
                 if len(line) == 0:
                     continue
 
-                print('Line error: |', line, '|Number of Tabs: ', line.count('\t'), 'File: ', tsv_file)
+                print('Line error at {}: |'.format(pos), line, '|Number of Tabs: ', line.count('\t'), 'File: ', tsv_file)
 
         if url is not None or context is not None:
             parts.append({"url": url, 'header': header, 'text': "".join(text), 'context': context})
