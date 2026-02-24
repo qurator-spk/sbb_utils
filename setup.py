@@ -17,6 +17,7 @@ setup(
     url="https://github.com/qurator-spk/sbb_utils",
     packages=find_packages(exclude=["*.tests", "*.tests.*",
                                     "tests.*", "tests"]),
+    namespace_packages=['qurator'],
     install_requires=install_requires,
     entry_points={
       'console_scripts': [
