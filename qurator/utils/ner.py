@@ -30,6 +30,7 @@ def ner(tsv, ner_rest_endpoint, keep_tokenization=False):
     prev_row_token_tag = 'O'
     prev_ner_token_tag = 'O'
 
+    ner_token_left_over = tuple()
     for idx, row in tsv.iterrows():
 
         row_token = unicodedata.normalize('NFC', str(row.TOKEN).replace(' ', ''))
@@ -40,8 +41,17 @@ def ner(tsv, ner_rest_endpoint, keep_tokenization=False):
         ner_token_concat = ''
 
         while row_token != ner_token_concat:
+            if len(ner_token_left_over) == 0:
+                ner_token, ner_tag, sentence_break, cur_sen = next(result_sequence)
+            else:
+                ner_token, ner_tag, sentence_break, cur_sen = ner_token_left_over
+                ner_token_left_over = tuple()
 
-            ner_token, ner_tag, sentence_break, cur_sen = next(result_sequence)
+            if len(row_token) < len(ner_token) and ner_token.startswith(row_token):
+                # This is the rare case where multiple tokens on the client side come back as one single concatenated
+                # token from the server side
+                ner_token_left_over = (ner_token[len(row_token):], ner_tag, sentence_break, cur_sen)
+                ner_token = row_token
 
             ner_token_concat += ner_token
 
