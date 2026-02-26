@@ -3,6 +3,8 @@ import requests
 import unicodedata
 import json
 
+from torch.distributions.constraints import boolean
+
 
 def ner(tsv, ner_rest_endpoint, keep_tokenization=False):
 
@@ -31,7 +33,7 @@ def ner(tsv, ner_rest_endpoint, keep_tokenization=False):
     prev_ner_token_tag = 'O'
 
     ner_token_left_over = tuple()
-    # ner_tokens = list()
+    # debug_info = list()
     for idx, row in tsv.iterrows():
 
         row_token = unicodedata.normalize('NFC', str(row.TOKEN).replace(' ', ''))
@@ -42,15 +44,19 @@ def ner(tsv, ner_rest_endpoint, keep_tokenization=False):
         ner_token_concat = ''
 
         while row_token != ner_token_concat:
+
+            # left_over = False
             if len(ner_token_left_over) == 0:
                 ner_token, ner_tag, sentence_break, cur_sen = next(result_sequence)
             else:
                 ner_token, ner_tag, sentence_break, cur_sen = ner_token_left_over
                 ner_token_left_over = tuple()
+                # left_over = True
 
-            # ner_tokens.append((row_token, ner_token, ner_token_concat))
+            # debug_info.append((row_token, ner_token, ner_token_concat, left_over))
 
-            if len(row_token) < len(ner_token) and (ner_token_concat + ner_token).startswith(row_token):
+            if (len(row_token) < len(ner_token_concat) + len(ner_token)
+                    and (ner_token_concat + ner_token).startswith(row_token)):
                 # This is the rare case where multiple tokens on the client side come back as one single concatenated
                 # token from the server side
                 ner_token_left_over = (ner_token[len(row_token) - len(ner_token_concat):],
@@ -87,6 +93,8 @@ def ner(tsv, ner_rest_endpoint, keep_tokenization=False):
                     prev_ner_token_tag = ner_tag
 
             except AssertionError as e:
+                # debug_info = \
+                #   pd.DataFrame(ner_tokens, columns=['row_token', 'ner_token', 'ner_token_concat', 'left_over'])
                 # import ipdb;ipdb.set_trace()
                 print("NER tokens do not match original at line: {}, ner token: {}. Sentence: {}".
                         format(idx, ner_token, cur_sen))
