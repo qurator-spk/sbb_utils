@@ -3,8 +3,6 @@ import requests
 import unicodedata
 import json
 
-from torch.distributions.constraints import boolean
-
 
 def ner(tsv, ner_rest_endpoint, keep_tokenization=False):
 
