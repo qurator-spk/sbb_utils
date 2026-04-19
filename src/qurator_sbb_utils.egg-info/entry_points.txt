@@ -1,0 +1,5 @@
+[console_scripts]
+csv2sqlite = qurator.utils.csv:to_sqlite
+df-concatenate = qurator.utils.pickle:concatenate
+df2sqlite = qurator.utils.pickle:to_sqlite
+find-entities = qurator.utils.entities:find_entities
