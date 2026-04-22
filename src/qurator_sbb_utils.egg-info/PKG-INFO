@@ -1,0 +1,52 @@
+Metadata-Version: 2.4
+Name: qurator-sbb-utils
+Version: 0.0.1
+Summary: Qurator
+Author-email: Kai Labusch <Kai.Labusch@sbb.spk-berlin.de>
+License: Apache License 2.0
+Project-URL: Homepage, https://github.com/qurator-spk/sbb_utils
+Project-URL: Repository, https://github.com/qurator-spk/sbb_utils.git
+Keywords: ocr,ocr-d,tesseract-ocr
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: tqdm
+Requires-Dist: click
+Requires-Dist: requests
+Requires-Dist: ipython
+
+This package provides shared functionality for
+* [sbb_tools](https://github.com/qurator-spk/sbb_tools)
+* [sbb_knowledge-base](https://github.com/qurator-spk/sbb_knowledge-base)
+* [sbb_ner](https://github.com/qurator-spk/sbb_ner)
+* [sbb_ned](https://github.com/qurator-spk/sbb_ned)
+* [sbb_topic-modelling](https://github.com/qurator-spk/sbb_topic-modelling)
+* [sbb_web_integration](https://github.com/qurator-spk/sbb_web_integration)
+* [page2tsv](https://github.com/qurator-spk/page2tsv)
+
+# Installation:
+
+Setup virtual environment:
+```
+virtualenv --python=python3.6 venv
+```
+
+Activate virtual environment:
+```
+source venv/bin/activate
+```
+
+Upgrade pip:
+```
+pip install -U pip
+```
+
+Install package together with its dependencies in development mode:
+```
+pip install -e ./
+```
