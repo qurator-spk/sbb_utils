@@ -1,5 +1,6 @@
 [build-system]
 requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "qurator-sbb-utils"
@@ -35,3 +36,7 @@ Repository = "https://github.com/qurator-spk/sbb_utils.git"
 
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}
+
+[tool.setuptools.packages.find]
+where = ["."]          # or "src" if you use a src layout
+include = ["qurator*"]
