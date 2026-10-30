@@ -3,7 +3,7 @@ requires = ["setuptools", "wheel"]
 
 [project]
 name = "qurator-sbb-utils"
-version = "0.0.1"
+version = "0.0.2"
 authors = [
     {name = "Kai Labusch", email = "Kai.Labusch@sbb.spk-berlin.de"},
 ]
